@@ -1,0 +1,798 @@
+/* =========================================
+   1. Base & Reset
+   ========================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Zen Maru Gothic", sans-serif;
+  background: #ffbd88;
+  color: #333;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.3s;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+iframe {
+  border: none;
+  display: block;
+  width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: bottom;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* =========================================
+   2. Animations
+   ========================================= */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* FVのアニメーション（シンプルにフェードインのみ） */
+.fade-in-simple {
+  animation: fadeInSimple 1s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInSimple {
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================================
+   3. PC Layout
+   ========================================= */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.header__inner {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.header__logo img {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
+.header__nav {
+  margin-left: auto;
+  margin-right: 40px;
+}
+
+.nav-list {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-list__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.nav-list__item i {
+  color: #ffbd88;
+}
+
+.sns-links {
+  display: flex;
+  gap: 16px;
+}
+
+.sns-link {
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: block;
+}
+
+/* =========================================
+   4. Hero Section (Separate Layout)
+   ========================================= */
+.main-content {
+  padding-top: 80px;
+  width: 100%;
+  background: #fff;
+}
+
+/* Hero全体の設定 */
+.hero {
+  position: relative;
+  width: 100%;
+  /* PC: ヘッダー(80px)を除いた高さを確保 */
+  height: calc(100vh - 80px);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  /* 縦に積む */
+  align-items: center;
+  justify-content: space-between;
+  /* 上下に分散 */
+  padding-top: 80px;
+  /* 画像の上の余白 */
+  padding-bottom: 20px;
+  /* 下の余白 */
+}
+
+/* カルーセル（画像）エリア */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  /* 残りの高さを埋める（ただしinfo-cardの分は確保される） */
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  /* Safari対策 */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  margin-bottom: 20px;
+  /* 画像と営業案内の隙間 */
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  background-size: cover;
+  background-position: center;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* 営業案内（独立ブロック） */
+.info-card {
+  /* absoluteをやめてstatic（通常のフロー）に戻す */
+  position: static;
+  transform: none;
+
+  background: #ffe5d0;
+  border-radius: 12px;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+  /* カルーセルと幅を合わせる */
+  /* 高さは中身なりだが、大きくなりすぎないように */
+  flex-shrink: 0;
+}
+
+.info-card__label {
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.info-card__details {
+  display: flex;
+  gap: 32px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.info-card__details li {
+  display: flex;
+  gap: 12px;
+}
+
+/* =========================================
+   5. Content Sections
+   ========================================= */
+.content-wrapper {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.section {
+  margin-bottom: 60px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  position: relative;
+  width: fit-content;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+  margin-left: 10px;
+}
+
+.title-deco {
+  position: absolute;
+  top: -8px;
+  left: -4px;
+  width: 45px;
+  height: 45px;
+  background: #abfff8;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.intro-text p {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 1.5em;
+  line-height: 2;
+}
+
+.price-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px dotted #ccc;
+  padding-bottom: 4px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.price-note {
+  font-size: 14px;
+  text-align: right;
+  width: 80%;
+  margin: 8px auto 0;
+}
+
+.facility-block {
+  margin-bottom: 60px;
+}
+
+.facility-img {
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 24px;
+}
+
+.facility-title {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.facility-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #ffbd88;
+  border-radius: 50%;
+}
+
+.line {
+  width: 100px;
+  height: 4px;
+  background: #ffbd88;
+  align-self: center;
+}
+
+.facility-desc {
+  background: #ffe5d1;
+  padding: 24px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.facility-desc.transparent {
+  background: transparent;
+  padding: 0;
+  text-align: center;
+}
+
+.map-frame-wrapper {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #eee;
+}
+
+.address-text {
+  margin-top: 24px;
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+}
+
+.contact-form {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.required {
+  color: #f23a3c;
+  margin-left: 5px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  background: #f9f9f9;
+  font-family: inherit;
+}
+
+.form-textarea {
+  height: 200px;
+  resize: none;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.policy-link {
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.submit-btn {
+  background: #333;
+  color: #fff;
+  width: 100%;
+  padding: 20px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 30px;
+  transition: transform 0.2s;
+}
+
+.submit-btn:hover {
+  transform: scale(1.02);
+}
+
+footer {
+  text-align: center;
+  padding: 60px 24px;
+}
+
+.footer-sns {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.contain {
+  background-size: contain;
+  /* 画像の全体が収まるようにリサイズ */
+  background-repeat: no-repeat;
+  /* 画像を繰り返さない（タイリング防止） */
+  background-position: center;
+  /* 画像をボックスの中央に配置 */
+}
+
+.facility-p{
+  max-width: 400px;
+  margin: 10px auto;
+}
+
+/* =========================================
+   6. SP Styles (Max Width 840px)
+   ========================================= */
+.mobile-menu-btn,
+.mobile-menu-overlay,
+.mobile-menu-drawer {
+  display: none;
+}
+
+@media screen and (max-width: 840px) {
+  .header {
+    display: none;
+  }
+
+  .app {
+    display: block;
+    background-color: #fff;
+  }
+
+  .main-content {
+    padding-top: 0;
+    background: transparent;
+  }
+
+  /* SP Hero (100vh) */
+  .hero {
+    height: 100vh;
+    /* ヘッダーなし、画面いっぱい */
+    background: transparent;
+    padding-top: 10px;
+    /* 上部余白 */
+    padding-bottom: 10px;
+    /* 下部余白 */
+    /* 画像とInfoを縦に並べる */
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .carousel-container {
+    width: 95%;
+    /* 横幅95% */
+    /* 高さを自動調整（flexで余った部分を使う） */
+    flex: 1;
+    margin: 0 auto;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    /* info-cardとの隙間 */
+  }
+
+  /* SP Info Card */
+  .info-card {
+    position: static;
+    transform: none;
+    width: 95%;
+    /* 画像と同じ幅に */
+    margin: 0 auto;
+
+    gap: 16px;
+    padding: 16px;
+    flex-direction: row;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* 縦幅を固定しすぎない */
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .info-card__label {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .info-card__details {
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  .info-card__details li {
+    gap: 6px;
+  }
+
+  .section-title{
+    font-size: 24px;
+  }
+  /* Content Area */
+  .content-wrapper {
+    background: #fff;
+    margin-top: 0;
+    padding-top: 40px;
+    position: relative;
+    z-index: 20;
+    min-height: 50vh;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .price-list,
+  .contact-form,
+  .price-note {
+    width: 100%;
+    text-align: left;
+  }
+
+  .facility-img,
+  .map-frame-wrapper {
+    height: 300px;
+  }
+
+  .map-frame-wrapper iframe {
+    height: 300px;
+  }
+
+  .facility-desc {
+    font-size: 16px;
+    padding: 16px;
+  }
+
+  .facility-desc.transparent {
+    text-align: left;
+  }
+
+  /* --- Hamburger Menu --- */
+  .mobile-menu-btn {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border-radius: 0 0 0 24px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobile-menu-btn i {
+    font-size: 24px;
+    color: #ffbd88;
+    margin-bottom: 4px;
+  }
+
+  .mobile-menu-btn span {
+    font-size: 12px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .mobile-menu-btn.active i {
+    color: #ffbd88;
+  }
+
+  .mobile-menu-btn.active span {
+    color: #333;
+  }
+
+  .mobile-menu-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1500;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  .mobile-menu-overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-menu-drawer {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    background: #ffbd88;
+    z-index: 1600;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-menu-drawer.open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-logo {
+    width: 140px;
+    margin-bottom: 60px;
+  }
+
+  .mobile-nav-link {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #3e2723;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .mobile-nav-link i {
+    margin-right: 12px;
+  }
+
+  .mobile-menu-sns {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .mobile-menu-sns .sns-link {
+    width: 40px;
+    height: 40px;
+  }
+
+  .modal-content {
+    width: 92%;
+    padding: 24px;
+    max-height: 70vh;
+  }
+}
+
+/* =========================================
+   7. Privacy Policy Modal
+   ========================================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+
+.modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  border-radius: 12px;
+  padding: 32px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  border-bottom: 2px solid #ffbd88;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+.modal-text p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.modal-text h3 {
+  margin: 24px 0 8px;
+  font-size: 16px;
+}
+
+.modal-close {
+  display: block;
+  margin: 32px auto 0;
+  background: #333;
+  color: #fff;
+  padding: 12px 40px;
+  border-radius: 30px;
+  font-weight: 700;
+}
+
+.modal-close:hover {
+  background: #555;
+}
